@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<h1>Bienvenue {{ app.user.prenom }}, veuillez vous inscrire a une formation. </h1>
+<div class="row">
+{% for formation in formations %}
+    <div class="col-sm-4">
+    {% if formation not in user_formations %}
+    
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header text-center">{{formation.DateDebut|date('y/m/d h:m:s')}}<div class="pull-right"> <i class="fas fa-pen"></i></div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{formation.GetProduit.libelle }}</h5>
+              <p class="card-text">Durée : {{formation.getNbreHeures  }}h</p>
+              <p class="card-text">Ville : {{formation.getVille}}</p>
+            </div>
+            <div class="card-footer text-center">
+                <form method="post">
+                    <button class="btn btn-success text-white" name="_formation_id" value="{{formation.Id}}" type="submit">S'inscrire</button>
+                </form>
+            </div>
+        </div>
+    
+    {% elseif app.user.getInscriptionByFormation(formation.id)  == "pending" %}
+        <div class="card text-white bg-secondary mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center">{{formation.DateDebut|date('y/m/d h:m:s')}}<div class="pull-right"><i class="fas fa-hourglass"></i></div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{formation.GetProduit.libelle }}</h5>
+              <p class="card-text">Durée : {{formation.getNbreHeures  }}h</p>
+              <p class="card-text">Ville : {{formation.getVille}}</p>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-light text-white" disabled type="button">S'inscrire</button>
+            </div>
+        </div>
+    {% elseif app.user.getInscriptionByFormation(formation.id) == "declined" %}
+        <div class="card text-white bg-danger mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center">{{formation.DateDebut|date('y/m/d h:m:s')}}<div class="pull-right"><i class="fas fa-times"></i></div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{formation.GetProduit.libelle }}</h5>
+              <p class="card-text">Durée : 13h</p>
+              <p class="card-text">Ville : Paris.</p>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-danger text-white" disabled type="button">S'inscrire</button>
+            </div>
+        </div>
+    {% elseif app.user.getInscriptionByFormation(formation.id) == "accepted" %}
+        <div class="card text-white bg-success mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center">{{formation.DateDebut|date('y/m/d h:m:s')}}<div class="pull-right"><i class="fas fa-check"></i></div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{formation.GetProduit.libelle }}</h5>
+              <p class="card-text">Durée : 13h</p>
+              <p class="card-text">Ville : Paris.</p>
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-success text-white" disabled type="button">S'inscrire</button>
+            </div>
+        </div>
+    {% endif %}
+        </div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<h1>Bienvenue {{ app.user.prenom }}, vous pouvez accepter des inscriptions. </h1>
+{% if inscriptions|length > 0 %}
+<div class="row">
+{% for inscription in inscriptions %}
+  <div class="col-sm-4">
+    {% if inscription.status == "pending" %}
+    
+    <div class="card text-white bg-secondary mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center"><div class="pull-left">{{inscription.formation.DateDebut|date('y/m/d h:m:s')}}</div><div class="pull-right">{{inscription.user.prenom}} {{inscription.user.nom}}</div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{inscription.formation.produit.libelle}}</h5>
+              <p class="card-text">Durée : {{inscription.formation.nbreHeures}}h</p>
+              <p class="card-text">Ville : {{inscription.formation.ville}}.</p>
+            </div>
+            <div class="card-footer text-center">
+                <form method="post">
+                    <button name="_inscription_valider" class="btn btn-danger pull-left" value="declined-{{inscription.id}}" type="submit" id="toleft"><i class="fas fa-times"></i></button>
+                   
+                    <button  name="_inscription_valider" class="btn btn-success pull-right" value="accepted-{{inscription.id}}" type="submit" id="toright"><i class="fas fa-check"></i></button>
+                </form>
+            </div>
+        </div>
+    
+    {% elseif inscription.status == "accepted" %}
+    <div class="card text-white bg-success mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center"><div class="pull-left">{{inscription.formation.DateDebut|date('y/m/d h:m:s')}}</div><div class="pull-right">{{inscription.user.prenom}} {{inscription.user.nom}}</div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{inscription.formation.produit.libelle}}</h5>
+              <p class="card-text">Durée : {{inscription.formation.nbreHeures}}h</p>
+              <p class="card-text">Ville : {{inscription.formation.ville}}.</p>
+            </div>
+            <div class="card-footer text-center">
+                <form method="post">
+                    <button disabled name="_inscription_valider" class="btn btn-success pull-left" value="declined-{{inscription.id}}" type="submit" id="toleft"><i class="fas fa-times"></i></button>
+                   
+                    <button disabled name="_inscription_valider" class="btn btn-success pull-right" value="accepted-{{inscription.id}}" type="submit" id="toright"><i class="fas fa-check"></i></button>
+                </form>
+            </div>
+           
+        </div>
+    {% else %}
+    <div class="card text-white bg-danger mb-3 " style="max-width: 18rem;">
+            <div class="card-header text-center"><div class="pull-left">{{inscription.formation.DateDebut|date('y/m/d h:m:s')}}</div><div class="pull-right">{{inscription.user.prenom}} {{inscription.user.nom}}</div></div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{inscription.formation.produit.libelle}}</h5>
+              <p class="card-text">Durée : {{inscription.formation.nbreHeures}}h</p>
+              <p class="card-text">Ville : {{inscription.formation.ville}}.</p>
+            </div>
+            <div class="card-footer text-center">
+                <form method="post">
+                    <button disabled name="_inscription_valider" class="btn btn-danger pull-left" value="declined-{{inscription.id}}" type="submit" id="toleft"><i class="fas fa-times"></i></button>
+                   
+                    <button disabled name="_inscription_valider" class="btn btn-danger pull-right" value="accepted-{{inscription.id}}" type="submit" id="toright"><i class="fas fa-check"></i></button>
+                </form>
+            </div>
+            
+        </div>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+  <center>
+  Aucune inscriptions
+</center>
+</div>
+{% endif %}
+{% endblock %}

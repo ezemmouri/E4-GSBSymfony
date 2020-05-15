@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+
+
+ {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <h1>S'inscrire</h1>
+
+    {{ form_start(registrationForm) }}
+        
+    {{form_widget(registrationForm)}}
+
+    <input type="submit" value="Valider" class="btn btn-primary">
+    {{ form_end(registrationForm) }}
+{% endblock %}
